@@ -6,8 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.evernotic.models.Note;
 import ru.evernotic.services.NoteService;
+
+import static ru.evernotic.constants.Constants.DEFAULT_LOCATION_LATITUDE;
+import static ru.evernotic.constants.Constants.DEFAULT_LOCATION_LONGITUDE;
 
 
 @Controller
@@ -17,10 +21,13 @@ public class NoteController {
     private final NoteService noteService; // если "final" то Spring при создании бина сразу его будет инжектить, а не тогда, когда к нему будем обращаться
 
     @GetMapping("/") // по GET запросу в корень сайта
-    public String products(Model model) { // Model передаем для того, чтобы передаватькакие-нибудь  параметры в шаблонизатор
-        model.addAttribute("notes", noteService.listNotes()); // т.о. передадим туда список всех записей / "notes" -ключь; noteService.listNotes() -значение
+    public String products(@RequestParam(name = "title", required = false) String title, Model model) { // Поиск по title, false -данный параметр необязателен // Model передаем для того, чтобы передаватькакие-нибудь  параметры в шаблонизатор
+        model.addAttribute("notes", noteService.listNotes(title)); // т.о. передадим туда список всех записей / "notes" -ключь; noteService.listNotes() -значение
 
-        System.out.println("NoteController public String products(Model model)");
+        model.addAttribute("defaultLatitude", DEFAULT_LOCATION_LATITUDE);
+        model.addAttribute("defaultLongitude", DEFAULT_LOCATION_LONGITUDE);
+
+        // Либо вернет весь список, есл title нет, либо отсортированный, если еешеду присутствует
         return "notes";
     }
 
@@ -42,5 +49,12 @@ public class NoteController {
     public String deleteNote(@PathVariable Long id) {
         noteService.deleteNote(id);
         return "redirect:/"; // обновить страницу
+    }
+
+    // я добавил
+    @PostMapping("/note/getAll")
+    public String getAll(Model model) {
+        model.addAttribute("noteList", noteService.listAllNotes());
+        return "note-print_all_notes";
     }
 }
