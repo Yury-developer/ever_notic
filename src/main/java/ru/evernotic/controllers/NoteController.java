@@ -3,15 +3,11 @@ package ru.evernotic.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.evernotic.models.Note;
 import ru.evernotic.services.NoteService;
 
-import static ru.evernotic.constants.Constants.DEFAULT_LOCATION_LATITUDE;
-import static ru.evernotic.constants.Constants.DEFAULT_LOCATION_LONGITUDE;
+import static ru.evernotic.constants.Constants.*;
 
 
 @Controller
@@ -24,8 +20,10 @@ public class NoteController {
     public String products(@RequestParam(name = "title", required = false) String title, Model model) { // Поиск по title, false -данный параметр необязателен // Model передаем для того, чтобы передаватькакие-нибудь  параметры в шаблонизатор
         model.addAttribute("notes", noteService.listNotes(title)); // т.о. передадим туда список всех записей / "notes" -ключь; noteService.listNotes() -значение
 
-        model.addAttribute("defaultLatitude", DEFAULT_LOCATION_LATITUDE);
-        model.addAttribute("defaultLongitude", DEFAULT_LOCATION_LONGITUDE);
+        model.addAttribute("defaultLatitude", Double.toString(DEFAULT_LOCATION_LATITUDE));
+        model.addAttribute("defaultLongitude", Double.toString(DEFAULT_LOCATION_LONGITUDE));
+        System.out.println("defaultLatitude = " + model.getAttribute("defaultLatitude"));
+        System.out.println("defaultLongitude = " + model.getAttribute("defaultLongitude"));
 
         // Либо вернет весь список, есл title нет, либо отсортированный, если еешеду присутствует
         return "notes";

@@ -8,7 +8,7 @@
 
 <body>
 
-<h1>Notes</h1>
+<h1>notes</h1>
 <h4>Все записи в блокноте</h4>
 
 
@@ -29,6 +29,10 @@
     <h3>Записей нет!</h3>
 </#list>
 
+<div>
+    defaultLatitude = ${defaultLatitude}
+    defaultLongitude = ${defaultLongitude}
+</div>
 
 
 <hr>

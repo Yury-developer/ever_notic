@@ -8,7 +8,7 @@
 
 <body>
 
-<h1>Notes</h1>
+<h1>note-print_all_notes</h1>
 <h4>Вывожу все записи в блокноте</h4>
 
 
